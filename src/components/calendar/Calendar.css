@@ -1,0 +1,10 @@
+.calendar{
+    flex: 0.65;
+    padding: 10px 16px;
+    border-right: 1px solid var(--app-background);
+    overflow-y: scroll ;
+}
+
+.calendar::-webkit-scrollbar{
+    display: none;
+}
