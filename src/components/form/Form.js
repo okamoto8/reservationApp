@@ -67,22 +67,30 @@ function Form({ addEvent }) {
       );
       console.log("API Response:", response.data);
 
-      addEvent({
-        id: response.data.userId,
-        title: response.data.userName,
-        start: response.data.startTime,
-        end: response.data.endTime,
-      });
-      console.log(addEvent);
+      if (response.data.error) {
+        alert(response.data.error);
+      } else {
+        addEvent({
+          id: response.data.userId,
+          title: response.data.userName,
+          start: response.data.startTime,
+          end: response.data.endTime,
+        });
+        console.log(addEvent);
 
-      alert("予約が正常に行われました！");
+        alert("予約が正常に行われました！");
 
-      setName("");
-      setStartTime(dayjs().startOf("day").hour(12).minute(0));
-      setEndTime(dayjs().startOf("day").hour(13).minute(0));
+        setName("");
+        setStartTime(dayjs().startOf("day").hour(12).minute(0));
+        setEndTime(dayjs().startOf("day").hour(13).minute(0));
+      }
     } catch (error) {
       console.error("Error submitting reservation:", error);
-      alert("予約の送信中にエラーが発生しました。");
+      if (error.response && error.response.data && error.response.data.error) {
+        alert(error.response.data.error);
+      } else {
+        alert("予約の送信中にエラーが発生しました。");
+      }
     }
   };
 
