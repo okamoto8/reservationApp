@@ -29,7 +29,10 @@ function Form({ addEvent }) {
 
   const handleTimeChange = (newTime, isStart) => {
     if (isStart) {
-      setStartTime(combineDateTime(startTime, newTime));
+      const newStartTime = combineDateTime(startTime, newTime);
+      setStartTime(newStartTime);
+      // 終了時刻を開始時刻の1時間後に設定
+      setEndTime(newStartTime.add(1, 'hour'));
     } else {
       setEndTime(combineDateTime(endTime, newTime));
     }
@@ -67,9 +70,11 @@ function Form({ addEvent }) {
       );
       console.log("API Response:", response.data);
 
-      if (response.data.error) {
+      
+
+      if(response.data.error){
         alert(response.data.error);
-      } else {
+      }else{
         addEvent({
           id: response.data.userId,
           title: response.data.userName,
@@ -77,20 +82,19 @@ function Form({ addEvent }) {
           end: response.data.endTime,
         });
         console.log(addEvent);
-
-        alert("予約が正常に行われました！");
-
-        setName("");
-        setStartTime(dayjs().startOf("day").hour(12).minute(0));
-        setEndTime(dayjs().startOf("day").hour(13).minute(0));
       }
+
+      alert("予約が正常に行われました！");
+
+      setName("");
+      setStartTime(dayjs().startOf("day").hour(12).minute(0));
+      setEndTime(dayjs().startOf("day").hour(13).minute(0));
     } catch (error) {
       console.error("Error submitting reservation:", error);
-      if (error.response && error.response.data && error.response.data.error) {
+      if(error.response && error.response.data && error.response.data.error){
         alert(error.response.data.error);
-      } else {
-        alert("予約の送信中にエラーが発生しました。");
       }
+      alert("予約の送信中にエラーが発生しました。");
     }
   };
 
