@@ -15,6 +15,7 @@ function Calendar({ events, onEventDelete }) {
         await axios.delete(`http://127.0.0.1:8000/reservations/${eventId}`);
         onEventDelete(eventId);
         clickInfo.event.remove();
+        alert('予約の削除が完了しました')
       } catch (error) {
         console.error("Error deleting event:", error);
         alert("予約消去中にエラーが発生しました");
